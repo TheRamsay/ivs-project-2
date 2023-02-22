@@ -1,0 +1,11 @@
+/home/ramsay/dev/yew-calculator/frontend/target/wasm32-unknown-unknown/debug/deps/serde_wasm_bindgen-90439f2f93c93646.rmeta: /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/lib.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/de.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/error.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/ser.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/../README.md
+
+/home/ramsay/dev/yew-calculator/frontend/target/wasm32-unknown-unknown/debug/deps/libserde_wasm_bindgen-90439f2f93c93646.rlib: /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/lib.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/de.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/error.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/ser.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/../README.md
+
+/home/ramsay/dev/yew-calculator/frontend/target/wasm32-unknown-unknown/debug/deps/serde_wasm_bindgen-90439f2f93c93646.d: /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/lib.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/de.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/error.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/ser.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/../README.md
+
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/lib.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/de.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/error.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/ser.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/serde-wasm-bindgen-0.4.5/src/../README.md:

@@ -1,0 +1,11 @@
+/home/ramsay/dev/yew-calculator/frontend/target/debug/deps/futures_core-8a02566a5ba7a11d.rmeta: /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/lib.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/future.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/stream.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/mod.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/poll.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/__internal/mod.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/__internal/atomic_waker.rs
+
+/home/ramsay/dev/yew-calculator/frontend/target/debug/deps/futures_core-8a02566a5ba7a11d.d: /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/lib.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/future.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/stream.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/mod.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/poll.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/__internal/mod.rs /home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/__internal/atomic_waker.rs
+
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/lib.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/future.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/stream.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/mod.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/poll.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/__internal/mod.rs:
+/home/ramsay/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-core-0.3.26/src/task/__internal/atomic_waker.rs:
