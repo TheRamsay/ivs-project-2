@@ -1,1 +1,0 @@
-/home/ramsay/dev/yew-calculator/src/frontend/target/wasm32-unknown-unknown/debug/frontend.wasm: /home/ramsay/dev/yew-calculator/src/frontend/public/glue.js /home/ramsay/dev/yew-calculator/src/frontend/src/main.rs
