@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -21,4 +21,4 @@ jobs:
     - name: Run tests
       run: cd src && cargo test --workspace --verbose
     - name: Build app 
-      run: cargo tauri dev
+      run: cd src && cargo tauri build
