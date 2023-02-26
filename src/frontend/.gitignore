@@ -10,3 +10,5 @@ Cargo.lock
 **/*.rs.bk
 
 /public/tailwind.css
+
+/node_modules/
