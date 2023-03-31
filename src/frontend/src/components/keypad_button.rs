@@ -1,3 +1,4 @@
+use gloo_console::log;
 use web_sys::MouseEvent;
 use yew::{function_component, Html, html, Properties, classes, Callback, AttrValue};
 
@@ -24,9 +25,9 @@ pub struct Props {
 
 fn map_color(button_type: &ButtonType) -> &'static str {
     match button_type {
-        ButtonType::Primary => "gray-600",
-        ButtonType::Secondary => "violet-500",
-        ButtonType::Special => "blue-500"
+        ButtonType::Primary => "bg-orange-500",
+        ButtonType::Secondary => "bg-neutral-600",
+        ButtonType::Special => "bg-white-500"
     }
 }
 
@@ -39,10 +40,13 @@ pub fn keypad_button(props: &Props) -> Html {
         }
     };
 
+    let bg_color = map_color(&props.button_type);
+    log!(bg_color);
+
     html! {
         <div 
             class={classes!(
-                "bg-cyan-900", 
+                bg_color,
                 "flex", 
                 "justify-center", 
                 "items-center", 

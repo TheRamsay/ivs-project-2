@@ -22,6 +22,7 @@ pub fn app() -> Html {
     
     let document = web_sys::window().unwrap().document().unwrap();
 
+    // TODO: backspace
     use_effect_with_deps({
         let expression = expression.clone();
         let document = document.clone();
@@ -48,8 +49,9 @@ pub fn app() -> Html {
     }, document);
 
 
+    // 581C87
     html! {
-        <div class={classes!("app", "bg-neutral-900")}>
+        <div class={classes!("app", "bg-neutral-900", "bg-zinc-900")}>
             <Display expression={&*expression} />
             <Keypad handle_click={click_handler} />
         </div>
