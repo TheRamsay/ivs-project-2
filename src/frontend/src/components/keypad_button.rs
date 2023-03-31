@@ -1,4 +1,5 @@
-use yew::{function_component, Html, html, Properties, classes};
+use web_sys::MouseEvent;
+use yew::{function_component, Html, html, Properties, classes, Callback, AttrValue};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ButtonType {
@@ -13,11 +14,12 @@ impl Default for ButtonType {
     }
 }
 
-#[derive(Properties, Clone, PartialEq, Eq)]
+#[derive(Properties, Clone, PartialEq)]
 pub struct Props {
-    pub value: &'static str,
+    pub value: AttrValue,
     #[prop_or_default]
-    pub button_type: ButtonType
+    pub button_type: ButtonType,
+    pub handle_click: Callback<AttrValue>
 }
 
 fn map_color(button_type: &ButtonType) -> &'static str {
@@ -30,11 +32,31 @@ fn map_color(button_type: &ButtonType) -> &'static str {
 
 #[function_component(KeypadButton)]
 pub fn keypad_button(props: &Props) -> Html {
-    let bg_color = format!("bg-{}", map_color(&props.button_type));
+    let onclick = {
+        let props = props.clone();
+        move |_| {
+            props.handle_click.emit(AttrValue::from(props.value.clone()))
+        }
+    };
 
-        // <div class={classes!(bg_color, "flex", "justify-center", "items-center", "rounded", "shadow-lg", "h-11")}>
     html! {
-        <div class={classes!("bg-red-300")}>
+        <div 
+            class={classes!(
+                "bg-cyan-900", 
+                "flex", 
+                "justify-center", 
+                "items-center", 
+                "rounded", 
+                "h-auto", 
+                "w-auto",
+                "text-lg", 
+                "font-semibold", 
+                "text-gray-50", 
+                "select-none",
+                "cursor-pointer"
+            )} 
+            {onclick}
+        >
             {props.value.clone()}
         </div>
     }
