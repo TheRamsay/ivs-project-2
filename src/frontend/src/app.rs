@@ -49,7 +49,7 @@ pub fn app() -> Html {
 
 
     html! {
-        <div class={classes!("app", "bg-neutral-900")}>
+        <div class={classes!("app", "gradient-to-b","from-gradient_color_1","to-gradient_color_2")}>
             <Display expression={&*expression} />
             <Keypad handle_click={click_handler} />
         </div>
