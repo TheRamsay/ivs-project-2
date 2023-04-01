@@ -11,12 +11,13 @@ use crate::{app::{AppState}, services::state::expression_add};
 pub enum ButtonType {
     Primary,
     Secondary,
-    Special
+    Special,
+    Normal
 }
 
 impl Default for ButtonType {
     fn default() -> Self {
-        Self::Secondary
+        Self::Normal
     }
 }
 
@@ -29,8 +30,9 @@ pub struct Props {
 
 fn map_color(button_type: &ButtonType) -> &'static str {
     match button_type {
-        ButtonType::Primary => "bg-amber-500",
-        ButtonType::Secondary => "bg-zinc-700",
+        ButtonType::Primary => "bg-violet-500",
+        ButtonType::Secondary => "bg-slate-700",
+        ButtonType::Normal => "bg-gray-600",
         ButtonType::Special => "bg-white-500"
     }
 }
@@ -56,8 +58,9 @@ pub fn keypad_button(props: &Props) -> Html {
                 "justify-center", 
                 "items-center", 
                 "rounded", 
-                "h-auto", 
-                "w-auto",
+                "h-20", 
+                "w-20",
+                "drop-shadow-lg",
                 "text-lg", 
                 "font-semibold", 
                 "text-gray-50", 

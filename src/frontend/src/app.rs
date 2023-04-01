@@ -53,7 +53,8 @@ pub fn app() -> Html {
     });
 
     html! {
-        <div class={classes!("app", "bg-neutral-900", "bg-neutral2-800")}>
+        <div class={classes!("app","bg-gradient-to-b","from-gradient_color_1","to-gradient_color_2")}>
+
             <Display />
             <Keypad/>
             <div class={classes!("")}>
