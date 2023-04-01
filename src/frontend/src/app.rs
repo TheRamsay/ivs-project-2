@@ -43,13 +43,13 @@ pub fn app() -> Html {
                 onkeydown.emit(e.clone())
             });
 
-            move || drop(listener)
+            move || drop(listener)                      
         }
     }, document);
 
 
     html! {
-        <div class={classes!("app", "gradient-to-b","from-gradient_color_1","to-gradient_color_2")}>
+        <div class={classes!("app", "bg-gradient-to-b","from-gradient_color_1","to-gradient_color_2")}>
             <Display expression={&*expression} />
             <Keypad handle_click={click_handler} />
         </div>
