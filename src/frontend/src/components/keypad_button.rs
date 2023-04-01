@@ -42,7 +42,7 @@ pub fn keypad_button(props: &Props) -> Html {
     html! {
         <div 
             class={classes!(
-                "bg-cyan-900", 
+                "bg-violet-500",
                 "flex", 
                 "justify-center", 
                 "items-center", 
