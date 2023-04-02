@@ -16,7 +16,8 @@ const BACKSPACE_KEY_CODE: u32 = 8;
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Store)]
 pub struct AppState{
-    pub expression: Vec<String>
+    pub expression: Vec<String>,
+    pub result: Vec<String> 
 }
 
 #[function_component(App)]
@@ -25,7 +26,6 @@ pub fn app() -> Html {
 
     let document = web_sys::window().unwrap().document().unwrap();
 
-    // TODO: backspace
     use_effect({
         move || {
             let onkeydown = {
@@ -34,8 +34,14 @@ pub fn app() -> Html {
                         BACKSPACE_KEY_CODE => {
                             dispatch.reduce_mut(|state| expression_pop(state));
                         },
-                        48..=57 | 96..=105 => {
-                            dispatch.reduce_mut(|state| expression_add(state, ev.key()));
+                        // digits  digits     +     -     .     /
+                        48..=57 | 96..=105 | 187 | 189 | 190 | 191 => {
+                            let mut key = ev.key();
+                            if key == "*" {
+                                key = "×".to_owned();
+                            }
+
+                            dispatch.reduce_mut(|state| expression_add(state, key));
                         }
                         _ => ()
                     };
@@ -53,10 +59,10 @@ pub fn app() -> Html {
     });
 
     html! {
-        <div class={classes!("app", "bg-neutral-900", "bg-neutral2-800")}>
-            <Display />
-            <Keypad/>
-            <div class={classes!("")}>
+        <div class={classes!("app", "bg-gradient-to-b", "from-gradient_color_1", "to-gradient_color_2")}>
+            <div class={classes!("flex", "flex-col", "items-center", "p-5")}>
+                <Display />
+                <Keypad/>
             </div>
         </div>
     }

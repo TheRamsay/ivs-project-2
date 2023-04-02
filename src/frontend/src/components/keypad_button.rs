@@ -3,15 +3,16 @@ use std::fmt::format;
 use gloo_console::{log, externs::log};
 use web_sys::MouseEvent;
 use yew::{function_component, Html, html, Properties, classes, Callback, AttrValue};
-use yewdux::prelude::use_store;
+use yewdux::{prelude::use_store, dispatch};
 
-use crate::{app::{AppState}, services::state::expression_add};
+use crate::{app::{AppState}, services::state::{expression_add, expression_pop, expression_clear}};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ButtonType {
     Primary,
     Secondary,
-    Special
+    Blue,
+    Violet 
 }
 
 impl Default for ButtonType {
@@ -29,9 +30,10 @@ pub struct Props {
 
 fn map_color(button_type: &ButtonType) -> &'static str {
     match button_type {
-        ButtonType::Primary => "bg-amber-500",
-        ButtonType::Secondary => "bg-zinc-700",
-        ButtonType::Special => "bg-white-500"
+        ButtonType::Primary => "bg-slate-700",
+        ButtonType::Secondary => "bg-gray-600",
+        ButtonType::Blue => "bg-blue-500",
+        ButtonType::Violet => "bg-violet-500"
     }
 }
 
@@ -42,7 +44,24 @@ pub fn keypad_button(props: &Props) -> Html {
     let onclick = {
         let props = props.clone();
         move |_| {
-            dispatch.reduce_mut(|state| expression_add(state, props.value.clone()));
+            match &*props.value {
+                "C" => dispatch.reduce_mut(expression_pop),
+                "CE" => dispatch.reduce_mut(expression_clear),
+                "ln" => dispatch.reduce_mut(|state| {
+                    expression_add(state, props.value.clone());
+                    expression_add(state, "(".to_owned());
+                }),
+                "x²" => dispatch.reduce_mut(|state| {
+                    expression_add(state, "^".to_owned());
+                    expression_add(state, "2".to_owned());
+                }),
+                "=" => dispatch.reduce_mut(|state| {
+                    state.result = state.expression.clone();
+                    expression_clear(state);
+                    expression_add(state, String::from("42"));
+                }),
+                _ => dispatch.reduce_mut(|state| expression_add(state, props.value.clone()))
+            }
         }
     };
 
@@ -55,18 +74,20 @@ pub fn keypad_button(props: &Props) -> Html {
                 "flex", 
                 "justify-center", 
                 "items-center", 
-                "rounded", 
-                "h-auto", 
+                "rounded-lg", 
+                "h-24", 
                 "w-auto",
-                "text-lg", 
+                "text-4xl", 
                 "font-semibold", 
-                "text-gray-50", 
+                "text-zinc-300", 
                 "select-none",
                 "cursor-pointer",
+                "drop-shadow-lg",
+                "hover:opacity-80"
             )} 
             {onclick}
         >
-            {props.value.clone()}
+            <span class={"keypad-button-text"}>{props.value.clone()}</span>
         </div>
     }
 }
