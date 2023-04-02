@@ -21,11 +21,26 @@ impl Default for ButtonType {
     }
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ButtonSize {
+    Big,
+    Small
+}
+
+impl Default for ButtonSize {
+    fn default() -> Self {
+        Self::Small
+    }
+}
+
+
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
     pub value: String,
     #[prop_or_default]
     pub button_type: ButtonType,
+    #[prop_or_default]
+    pub button_size: ButtonSize,
 }
 
 fn map_color(button_type: &ButtonType) -> &'static str {
@@ -33,7 +48,14 @@ fn map_color(button_type: &ButtonType) -> &'static str {
         ButtonType::Primary => "bg-violet-500",
         ButtonType::Secondary => "bg-slate-700",
         ButtonType::Normal => "bg-gray-600",
-        ButtonType::Special => "bg-white-500"
+        ButtonType::Special => "bg-blue-500"
+    }
+}
+
+fn map_size(button_size: &ButtonSize) -> &'static str {
+    match button_size {
+        ButtonSize::Small => "w-20",
+        ButtonSize::Big => "w-40",
     }
 }
 
@@ -49,6 +71,7 @@ pub fn keypad_button(props: &Props) -> Html {
     };
 
     let bg_color = map_color(&props.button_type);
+    let size = map_size(&props.button_size);
 
     html! {
         <div 
@@ -59,7 +82,7 @@ pub fn keypad_button(props: &Props) -> Html {
                 "items-center", 
                 "rounded", 
                 "h-20", 
-                "w-20",
+                size,
                 "drop-shadow-lg",
                 "text-lg", 
                 "font-semibold", 
