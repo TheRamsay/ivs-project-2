@@ -1,5 +1,5 @@
 use yew::{function_component, Html, html, classes, Callback, Properties, AttrValue};
-use crate::{components::keypad_button::{KeypadButton, ButtonType}};
+use crate::{components::keypad_button::{KeypadButton, ButtonType, ButtonSize}};
 
 // #[derive(Properties, Clone, PartialEq)]
 // pub struct Props {
@@ -23,7 +23,7 @@ pub fn keypad() -> Html {
             <KeypadButton value={"7"} /> 
             <KeypadButton value={"8"} /> 
             <KeypadButton value={"9"} /> 
-            <KeypadButton value={"×"} button_type={ButtonType::Primary} /> 
+            <KeypadButton value={"×"} button_type={ButtonType::Secondary} /> 
 
             <KeypadButton value={"4"} /> 
             <KeypadButton value={"5"} /> 
