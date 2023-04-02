@@ -12,3 +12,5 @@ Cargo.lock
 /public/tailwind.css
 
 /node_modules/
+
+/dist/*
