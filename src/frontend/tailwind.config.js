@@ -8,8 +8,8 @@ module.exports = {
         full: "100%"
       },
       colors: {
-        'gradient_color_1': '#1e293b',
-        'gradient_color_2': '#140527'
+        'app-bg-start': '#1e293b',
+        'app-bg-end': '#140527'
       }
     },
   },
