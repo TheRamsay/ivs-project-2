@@ -15,14 +15,14 @@ pub fn display() -> Html {
 
     html! {
         <div class={classes!("text-4xl", "font-semibold", "w-full", "text-slate-300", "mb-6", "flex", "flex-col")}>
-            <div class={classes!("flex", "justify-end", "h-8", "break-all")}>
+            <div class={classes!("result-display", "flex", "justify-end", "break-all")}>
                 <Expression value={state.result.clone()}/>
             </div>
             <div class={classes!("flex", "justify-between", "items-center")}>
                 <div class={classes!("mr-4", "text-7xl")}>
                     {"="}
                 </div>
-                <div class={classes!("break-all", "text-4xl", "font-bold")}>
+                <div class={classes!("result-display", "break-all", "text-4xl", "font-bold")}>
                     <Expression value={state.expression.clone()}/>
                 </div>
             </div>
@@ -38,18 +38,17 @@ pub struct Props {
 #[function_component(Expression)]
 pub fn expression(props: &Props) -> Html {
     html! {
-        <>
-            {
-                props.value.iter().map(|e|{
-                    let font_color = match e.as_str() {
-                        "(" | ")" => "text-blue-500",
-                        "+" | "-" | "×" | "/" | "!" | "abs" | "^" | "√" => "text-violet-500",
-                        _ => ""
-                    };
+        // <span contenteditable={"true"}>
+        {
+            props.value.iter().map(|e|{
+                let font_color = match e.as_str() {
+                    "(" | ")" => "text-blue-500",
+                    "+" | "-" | "×" | "/" | "!" | "abs" | "^" | "√" => "text-violet-500",
+                    _ => ""
+                };
 
-                    html! { <span class={classes!(font_color, "mr-2")}>{e}</span>}
-                }).collect::<Html>()
-            }
-        </>
+                html! { <span class={classes!(font_color, "mr-2")}>{e}</span>}
+            }).collect::<Html>()
+        }
     }
 }

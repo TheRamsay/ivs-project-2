@@ -23,7 +23,7 @@ pub fn keypad() -> Html {
             <KeypadButton value={"7"} /> 
             <KeypadButton value={"8"} /> 
             <KeypadButton value={"9"} /> 
-            <KeypadButton value={"×"} button_type={ButtonType::Secondary} /> 
+            <KeypadButton value={"×"} button_type={ButtonType::Primary} /> 
 
             <KeypadButton value={"4"} /> 
             <KeypadButton value={"5"} /> 
