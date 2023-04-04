@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 mathlib = { path = "../mathlib/" }
+rust_decimal = { version = "1.29.1", features = ["maths"] }
+rust_decimal_macros = "1.29.1"

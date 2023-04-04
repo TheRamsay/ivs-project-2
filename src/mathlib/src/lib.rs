@@ -7,7 +7,7 @@ use rust_decimal_macros::dec;
 /// because you cannot store self-containing structures
 /// on the stack.
 ///
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum MathExpr {
     AddExpr(Box<MathExpr>, Box<MathExpr>),
     SubExpr(Box<MathExpr>, Box<MathExpr>),
