@@ -7,6 +7,7 @@ use rust_decimal_macros::dec;
 /// because you cannot store self-containing structures
 /// on the stack.
 ///
+#[derive(Debug)]
 pub enum MathExpr {
     AddExpr(Box<MathExpr>, Box<MathExpr>),
     SubExpr(Box<MathExpr>, Box<MathExpr>),
@@ -19,6 +20,7 @@ pub enum MathExpr {
     FactExpr(Box<MathExpr>),
     LnExpr(Box<MathExpr>),
     AbsExpr(Box<MathExpr>),
+    NegExpr(Box<MathExpr>),
     Number(Decimal),
 }
 
@@ -143,6 +145,14 @@ impl MathExpr {
             MathExpr::AbsExpr(a) => {
                 if let Some(a) = a.eval() {
                     Some(a.abs())
+                } else {
+                    None
+                }
+            }
+
+            MathExpr::NegExpr(a) => {
+                if let Some(a) = a.eval() {
+                    a.checked_mul(dec!(-1))
                 } else {
                     None
                 }
@@ -311,6 +321,16 @@ mod tests {
         let expr = AbsExpr(box_number("234.34"));
         assert_eq!(expr.eval(), Some(dec!(234.34)));
         let expr = AbsExpr(box_number("-897.5"));
+        assert_eq!(expr.eval(), Some(dec!(897.5)));
+    }
+
+    #[test]
+    fn minus_sign() {
+        let expr = NegExpr(box_number("0"));
+        assert_eq!(expr.eval(), Some(dec!(0)));
+        let expr = NegExpr(box_number("234.34"));
+        assert_eq!(expr.eval(), Some(dec!(-234.34)));
+        let expr = NegExpr(box_number("-897.5"));
         assert_eq!(expr.eval(), Some(dec!(897.5)));
     }
 
