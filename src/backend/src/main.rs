@@ -3,20 +3,21 @@
     windows_subsystem = "windows"
 )]
 
+mod parser;
+use parser::parse_input;
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![hello])
+        .invoke_handler(tauri::generate_handler![parse_and_eval])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
 
-/// this is where we will write all the documentation
-/// everything behind triple slash will be added
 #[tauri::command]
-fn hello(name: &str) -> Result<String, String> {
-    if name.contains(' ') {
-        Err("Name should not contain spaces".to_string())
-    } else {
-        Ok(format!("Hello, {}, 3 + 2 = {}", name, 42))
-    }
+fn parse_and_eval(input: &str) -> Result<String, String> {
+    Ok(parse_input(input)
+        .map_err(|e| format!("Parsing error: {}", e.to_string()))?
+        .eval()
+        .ok_or("Evaluation error: Invalid mathematical operation")?
+        .to_string())
 }
