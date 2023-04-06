@@ -19,4 +19,4 @@ jobs:
     - name : Install basic packages
       run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf && cargo install flamegraph
     - name: Run tests
-      run: cd src && cargo test --workspace --verbose
+      run: cd src && mkdir ./frontend/dist && cargo test --workspace --verbose
