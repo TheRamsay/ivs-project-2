@@ -155,6 +155,11 @@ mod tests {
     }
 
     #[test]
+    fn weird_operands() {
+        assert_eq!(eval("4 × 3 - 8÷4"), dec!(10));
+    }
+
+    #[test]
     fn larger_expression() {
         let expr =
             "-ln(998 + (45 % 180) ^ (44.7 - 44.125)) / ln(3.2 * 63.004 * abs(78.44 ^ -8 - 34.996))";

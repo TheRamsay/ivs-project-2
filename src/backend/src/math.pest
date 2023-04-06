@@ -34,8 +34,8 @@ infix_op = _{
 }
 addition_op = { "+" }
 subtraction_op = { "-" }
-multiplication_op = { "*" }
-division_op = { "/" }
+multiplication_op = { "*" | "×" }
+division_op = { "/" | "÷" }
 power_op = { "^" }
 modulo_op = { "%" }
 
