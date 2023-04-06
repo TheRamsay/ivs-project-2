@@ -12,10 +12,12 @@ prefix_op = _{
   minus_sign 
   | ln_op 
   | abs_op
+  | sqrt_op
 }
 minus_sign = { "-" }
 ln_op = { "ln" }
 abs_op = { "abs" }
+sqrt_op = { "√" }
 
 postfix_op = _{ factorial_op }
 factorial_op = { "!" }

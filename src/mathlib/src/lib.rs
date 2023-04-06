@@ -20,6 +20,7 @@ pub enum MathExpr {
     FactExpr(Box<MathExpr>),
     LnExpr(Box<MathExpr>),
     AbsExpr(Box<MathExpr>),
+    SqrtExpr(Box<MathExpr>),
     NegExpr(Box<MathExpr>),
     Number(Decimal),
 }
@@ -150,6 +151,14 @@ impl MathExpr {
                 }
             }
 
+            MathExpr::SqrtExpr(a) => {
+                if let Some(a) = a.eval() {
+                    a.sqrt()
+                } else {
+                    None
+                }
+            }
+
             MathExpr::NegExpr(a) => {
                 if let Some(a) = a.eval() {
                     a.checked_mul(dec!(-1))
@@ -245,6 +254,16 @@ mod tests {
         let divisor = DivExpr(box_number("0"), box_number("-7.3"));
         assert_eq!(divisor.eval(), Some(dec!(0)));
         let expr = DivExpr(box_number("-4466.7"), Box::new(divisor));
+        assert_eq!(expr.eval(), None);
+    }
+
+    #[test]
+    fn square_root() {
+        // 4 ** (3 ** 2) == 262144
+        let expr = SqrtExpr(box_number("4"));
+        assert_eq!(expr.eval(), Some(dec!(2)));
+
+        let expr = SqrtExpr(box_number("-4"));
         assert_eq!(expr.eval(), None);
     }
 

@@ -27,6 +27,7 @@ lazy_static! {
         .op(Op::postfix(Rule::factorial_op))
         .op(Op::prefix(Rule::abs_op))
         .op(Op::prefix(Rule::ln_op))
+        .op(Op::prefix(Rule::sqrt_op))
         .op(Op::prefix(Rule::minus_sign));
 }
 
@@ -56,6 +57,7 @@ fn parse_pairs(input_pairs: Pairs<Rule>) -> Result<MathExpr, pest::error::Error<
                     Rule::minus_sign => Ok(NegExpr(Box::new(subexpr))),
                     Rule::abs_op => Ok(AbsExpr(Box::new(subexpr))),
                     Rule::ln_op => Ok(LnExpr(Box::new(subexpr))),
+                    Rule::sqrt_op => Ok(SqrtExpr(Box::new(subexpr))),
                     _ => unreachable!("{}", INTERNAL_ERROR_MSG),
                 }
             } else {
@@ -157,6 +159,11 @@ mod tests {
     #[test]
     fn weird_operands() {
         assert_eq!(eval("4 × 3 - 8÷4"), dec!(10));
+    }
+
+    #[test]
+    fn square_root() {
+        assert_eq!(eval("√(√4.432 - √4)").round_dp(5), dec!(0.32439));
     }
 
     #[test]
