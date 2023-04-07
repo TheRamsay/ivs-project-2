@@ -38,7 +38,6 @@ pub struct Props {
 #[function_component(Expression)]
 pub fn expression(props: &Props) -> Html {
     html! {
-        // <span contenteditable={"true"}>
         {
             props.value.iter().map(|e|{
                 let font_color = match e.as_str() {

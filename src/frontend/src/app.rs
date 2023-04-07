@@ -61,7 +61,7 @@ pub fn app() -> Html {
     html! {
         <div class={classes!("app", "bg-gradient-to-b", "from-app-bg-start", "to-app-bg-end", "h-max")}>
             <div class={classes!("flex", "flex-col", "items-center", "p-5")}>
-                <Display />
+                <Display/>
                 <Keypad/>
             </div>
         </div>
