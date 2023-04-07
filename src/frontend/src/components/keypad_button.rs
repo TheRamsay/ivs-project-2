@@ -1,12 +1,8 @@
-use std::fmt::format;
-
-use gloo_console::{log, externs::log};
 use wasm_bindgen_futures::spawn_local;
-use web_sys::MouseEvent;
-use yew::{function_component, Html, html, Properties, classes, Callback, AttrValue};
-use yewdux::{prelude::use_store, dispatch};
+use yew::{function_component, Html, html, Properties, classes};
+use yewdux::{prelude::use_store};
 
-use crate::{app::{AppState}, services::{state::{expression_add, expression_pop, expression_clear, expression_add_many}, utils::remap_keyboard_signs}, parse_and_eval};
+use crate::{app::{AppState}, services::{state::{expression_pop, expression_clear, expression_add_many}, utils::remap_keyboard_signs}, parse_and_eval};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ButtonType {
@@ -74,6 +70,7 @@ pub fn keypad_button(props: &Props) -> Html {
                     expression_clear(state);
                 }),
                 "=" => {
+                    // TODO: write a nicer function to reuse this block in keypad_buttons.rs
                     let state = state.clone();
                     let dispatch = dispatch.clone();
                     spawn_local(async move {
@@ -91,7 +88,6 @@ pub fn keypad_button(props: &Props) -> Html {
                             })
                         }
                     });
-
                 },
                 _ => dispatch.reduce_mut(|state| expression_add_many(state, remap_keyboard_signs(&props.value.clone())))
             }
