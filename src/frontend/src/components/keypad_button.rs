@@ -1,11 +1,12 @@
 use std::fmt::format;
 
 use gloo_console::{log, externs::log};
+use wasm_bindgen_futures::spawn_local;
 use web_sys::MouseEvent;
 use yew::{function_component, Html, html, Properties, classes, Callback, AttrValue};
 use yewdux::{prelude::use_store, dispatch};
 
-use crate::{app::{AppState}, services::state::{expression_add, expression_pop, expression_clear}};
+use crate::{app::{AppState}, services::state::{expression_add, expression_pop, expression_clear}, parse_and_eval};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ButtonType {
@@ -63,6 +64,9 @@ fn map_size(button_size: &ButtonSize) -> &'static str {
 pub fn keypad_button(props: &Props) -> Html {
     let (state, dispatch) = use_store::<AppState>();
 
+    // let a = parse_and_eval("1 + 1").await;
+    // log!("{:?}", a.unwrap());
+
     let onclick = {
         let props = props.clone();
         move |_| {
@@ -77,11 +81,19 @@ pub fn keypad_button(props: &Props) -> Html {
                     expression_add(state, "^".to_owned());
                     expression_add(state, "2".to_owned());
                 }),
-                "=" => dispatch.reduce_mut(|state| {
-                    state.result = state.expression.clone();
-                    expression_clear(state);
-                    expression_add(state, String::from("42"));
-                }),
+                "=" => {
+                    let x = state.clone();
+                    let dispatch = dispatch.clone();
+                    spawn_local(async move {
+                        let result = parse_and_eval(&x.expression.join(" ")).await.unwrap().as_string().unwrap();
+                        dispatch.reduce_mut(|state| {
+                            state.result = state.expression.clone();
+                            expression_clear(state);
+                            expression_add(state, result.split(" ").map(String::from).collect());
+                        });
+                    });
+
+                },
                 _ => dispatch.reduce_mut(|state| expression_add(state, props.value.clone()))
             }
         }
