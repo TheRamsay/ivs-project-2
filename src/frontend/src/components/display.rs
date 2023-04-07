@@ -11,6 +11,8 @@ use crate::{app::{AppState}, services::utils::is_operator};
 pub fn display() -> Html {
     let (state, dispatch) = use_store::<AppState>();
 
+    log!(format!("{:?}", state.expression));
+
     html! {
         <div class={classes!("text-4xl", "font-semibold", "w-full", "text-slate-300", "mb-6", "flex", "flex-col")}>
             <div class={classes!("result-display", "flex", "justify-end", "break-all")}>
@@ -39,8 +41,11 @@ pub fn expression(props: &Props) -> Html {
         {
             props.value.iter().map(|e|{
                 let font_color = match e.as_str() {
+                    // Parentheses coloring
                     "(" | ")" => "text-blue-500",
+                    // Operators
                     "+" | "-" | "×" | "/" | "!" | "abs" | "^" | "√" => "text-violet-500",
+                    // Other characters are white
                     _ => ""
                 };
 

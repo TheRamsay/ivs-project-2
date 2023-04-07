@@ -7,24 +7,30 @@ use crate::app::AppState;
 
 use super::utils::is_number;
 
-pub fn expression_add(state: &mut AppState, value: String) {
+pub fn expression_add_many(state: &mut AppState, values: Vec<&str>) {
+    for value in values.into_iter() {
+        expression_add(state, value);
+    }
+}
+
+pub fn expression_add(state: &mut AppState, value: &str) {
     let last_term = state.expression.last();
 
     if last_term.is_none() {
-        state.expression.push(value);
+        state.expression.push(value.to_owned());
         return;
     }
 
     let last_term = last_term.unwrap();
 
-    if is_number(&value) && is_number(last_term) {
+    if is_number(&value.to_owned()) && is_number(last_term) {
         if let Some(mut last_item) = state.expression.pop() {
-            // If last term is a number, and current term is numbr too, we concatenate them
+            // If last term is a number, and current term is number too, we concatenate them
             last_item.push_str(&value);
             state.expression.push(last_item);
         }
     } else {
-        state.expression.push(value);
+        state.expression.push(value.to_owned());
     }
 }
 
