@@ -305,6 +305,8 @@ mod tests {
         assert_eq!(expr.eval(), Some(dec!(1)));
         let expr = FactExpr(box_number("0"));
         assert_eq!(expr.eval(), Some(dec!(1)));
+        let expr = FactExpr(box_number("10000"));
+        assert_eq!(expr.eval(), None);
     }
 
     #[test]
