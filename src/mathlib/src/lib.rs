@@ -331,6 +331,8 @@ mod tests {
         assert_eq!(expr.eval(), None);
         let expr = LnExpr(box_number("-897.5"));
         assert_eq!(expr.eval(), None);
+        let expr = FactExpr(box_number("7.5"));
+        assert_eq!(expr.eval(), None);
     }
 
     #[test]
