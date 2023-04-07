@@ -1,11 +1,6 @@
 use yew::{function_component, Html, html, classes, Callback, Properties, AttrValue};
 use crate::{components::keypad_button::{KeypadButton, ButtonType, ButtonSize}};
 
-// #[derive(Properties, Clone, PartialEq)]
-// pub struct Props {
-//     pub handle_click: Callback<String>
-// }
-
 #[function_component(Keypad)]
 pub fn keypad() -> Html {
     html! {

@@ -15,6 +15,6 @@ fn main() {
 
 #[wasm_bindgen(module = "/public/glue.js")]
 extern "C" {
-    #[wasm_bindgen(js_name = invokeHello, catch)]
-    pub async fn hello(name: String) -> Result<JsValue, JsValue>;
+    #[wasm_bindgen(js_name = invokeParseAndEval, catch)]
+    pub async fn parse_and_eval(input: &str) -> Result<JsValue, JsValue>;
 }
