@@ -11,8 +11,6 @@ use crate::{app::{AppState}, services::utils::is_operator};
 pub fn display() -> Html {
     let (state, dispatch) = use_store::<AppState>();
 
-    log!(format!("{:?}", state.expression));
-
     html! {
         <div class={classes!("text-4xl", "font-semibold", "w-full", "text-slate-300", "mb-6", "flex", "flex-col")}>
             <div class={classes!("result-display", "flex", "justify-end", "break-all")}>
