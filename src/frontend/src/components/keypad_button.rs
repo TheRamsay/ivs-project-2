@@ -6,7 +6,7 @@ use web_sys::MouseEvent;
 use yew::{function_component, Html, html, Properties, classes, Callback, AttrValue};
 use yewdux::{prelude::use_store, dispatch};
 
-use crate::{app::{AppState}, services::state::{expression_add, expression_pop, expression_clear}, parse_and_eval};
+use crate::{app::{AppState}, services::{state::{expression_add, expression_pop, expression_clear, expression_add_many}, utils::remap_keyboard_signs}, parse_and_eval};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ButtonType {
@@ -69,29 +69,31 @@ pub fn keypad_button(props: &Props) -> Html {
         move |_| {
             match &*props.value {
                 "C" => dispatch.reduce_mut(expression_pop),
-                "CE" => dispatch.reduce_mut(expression_clear),
-                "ln" => dispatch.reduce_mut(|state| {
-                    expression_add(state, props.value.clone());
-                    expression_add(state, "(".to_owned());
-                }),
-                "x²" => dispatch.reduce_mut(|state| {
-                    expression_add(state, "^".to_owned());
-                    expression_add(state, "2".to_owned());
+                "CE" => dispatch.reduce_mut(|state| {
+                    state.result = vec![];
+                    expression_clear(state);
                 }),
                 "=" => {
                     let state = state.clone();
                     let dispatch = dispatch.clone();
                     spawn_local(async move {
-                        let result = parse_and_eval(&state.expression.join(" ")).await.unwrap().as_string().unwrap();
-                        dispatch.reduce_mut(|s| {
-                            s.result = s.expression.clone();
-                            expression_clear(s);
-                            expression_add(s, result.split(" ").map(String::from).collect());
-                        });
+                        if let Ok(result) = parse_and_eval(&state.expression.join(" ")).await {
+                            let result = result.as_string().unwrap();
+                            dispatch.reduce_mut(|s| {
+                                s.result = s.expression.clone();
+                                expression_clear(s);
+                                expression_add_many(s, result.split(" ").collect());
+                            });
+                        } else {
+                            dispatch.reduce_mut(|state| {
+                                state.expression = vec!["error".to_owned()];
+                                state.result= vec![];
+                            })
+                        }
                     });
 
                 },
-                _ => dispatch.reduce_mut(|state| expression_add(state, props.value.clone()))
+                _ => dispatch.reduce_mut(|state| expression_add_many(state, remap_keyboard_signs(&props.value.clone())))
             }
         }
     };
