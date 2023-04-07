@@ -1,4 +1,4 @@
-pub const ALLOWED_KEYS: &'static [&str; 27] = &[
+pub const ALLOWED_KEYS: &'static [&str; 28] = &[
     "backspace",
     "enter",
     "+",
@@ -25,7 +25,8 @@ pub const ALLOWED_KEYS: &'static [&str; 27] = &[
     "6",
     "7",
     "8",
-    "9"
+    "9",
+    "0"
 ];
 
 pub fn remap_keyboard_signs(value: &str) -> Vec<&str> {
