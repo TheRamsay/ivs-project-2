@@ -64,9 +64,6 @@ fn map_size(button_size: &ButtonSize) -> &'static str {
 pub fn keypad_button(props: &Props) -> Html {
     let (state, dispatch) = use_store::<AppState>();
 
-    // let a = parse_and_eval("1 + 1").await;
-    // log!("{:?}", a.unwrap());
-
     let onclick = {
         let props = props.clone();
         move |_| {
@@ -82,14 +79,14 @@ pub fn keypad_button(props: &Props) -> Html {
                     expression_add(state, "2".to_owned());
                 }),
                 "=" => {
-                    let x = state.clone();
+                    let state = state.clone();
                     let dispatch = dispatch.clone();
                     spawn_local(async move {
-                        let result = parse_and_eval(&x.expression.join(" ")).await.unwrap().as_string().unwrap();
-                        dispatch.reduce_mut(|state| {
-                            state.result = state.expression.clone();
-                            expression_clear(state);
-                            expression_add(state, result.split(" ").map(String::from).collect());
+                        let result = parse_and_eval(&state.expression.join(" ")).await.unwrap().as_string().unwrap();
+                        dispatch.reduce_mut(|s| {
+                            s.result = s.expression.clone();
+                            expression_clear(s);
+                            expression_add(s, result.split(" ").map(String::from).collect());
                         });
                     });
 

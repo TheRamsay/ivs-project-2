@@ -19,7 +19,7 @@ pub fn expression_add(state: &mut AppState, value: String) {
 
     if is_number(&value) && is_number(last_term) {
         if let Some(mut last_item) = state.expression.pop() {
-            // If last term is a number, and current term is numbr too, we concatenate them
+            // If last term is a number, and current term is number too, we concatenate them
             last_item.push_str(&value);
             state.expression.push(last_item);
         }
