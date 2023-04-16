@@ -1,6 +1,4 @@
-use std::rc::Rc;
 
-use gloo_console::log;
 use yewdux::prelude::{Dispatch, use_store};
 
 use crate::app::AppState;
@@ -59,4 +57,8 @@ pub fn expression_pop(state: &mut AppState) {
 
 pub fn expression_clear(state: &mut AppState) {
     state.expression = vec![];
+}
+
+pub fn switch_theme(state: &mut AppState) {
+    state.dark_mode = !state.dark_mode;
 }

@@ -9,7 +9,7 @@ pub enum ButtonType {
     Primary,
     Secondary,
     Blue,
-    Violet 
+    Action 
 }
 
 impl Default for ButtonType {
@@ -40,13 +40,25 @@ pub struct Props {
     pub button_size: ButtonSize,
 }
 
-fn map_color(button_type: &ButtonType) -> &'static str {
-    match button_type {
-        ButtonType::Primary => "bg-slate-700",
-        ButtonType::Secondary => "bg-gray-600",
-        ButtonType::Blue => "bg-blue-500",
-        ButtonType::Violet => "bg-violet-500"
+fn map_color(button_type: &ButtonType, darkmode: bool) -> &'static str {
+    if darkmode {
+       return match button_type {
+            ButtonType::Primary => "bg-slate-700",
+            ButtonType::Secondary => "bg-gray-600",
+            ButtonType::Blue => "bg-blue-500",
+            ButtonType::Action => "bg-violet-500"
+        }
     }
+    match button_type {
+        ButtonType::Primary => "bg-slate-400",
+        ButtonType::Secondary => "bg-gray-100",
+        ButtonType::Blue => "bg-blue-500",
+        ButtonType::Action => "bg-amber-400"
+    }
+}
+
+fn map_text_color(darkmode:bool) -> &'static str {
+    if darkmode {"text-zinc-300" } else { "text-black"}
 }
 
 fn map_size(button_size: &ButtonSize) -> &'static str {
@@ -59,6 +71,10 @@ fn map_size(button_size: &ButtonSize) -> &'static str {
 #[function_component(KeypadButton)]
 pub fn keypad_button(props: &Props) -> Html {
     let (state, dispatch) = use_store::<AppState>();
+    
+    let bg_color = map_color(&props.button_type, state.dark_mode);
+    let text_color = map_text_color(state.dark_mode);
+
 
     let onclick = {
         let props = props.clone();
@@ -94,7 +110,6 @@ pub fn keypad_button(props: &Props) -> Html {
         }
     };
 
-    let bg_color = map_color(&props.button_type);
     let size = map_size(&props.button_size);
 
     html! {
@@ -108,9 +123,9 @@ pub fn keypad_button(props: &Props) -> Html {
                 "w-auto",
                 "text-4xl", 
                 "h-24", 
+                text_color,
                 size,
                 "font-semibold", 
-                "text-zinc-300", 
                 "select-none",
                 "cursor-pointer",
                 "drop-shadow-lg",

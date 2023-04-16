@@ -7,8 +7,8 @@ pub fn keypad() -> Html {
         <div class={classes!("grid", "grid-cols-4", "gap-4", "min-w-full", "min-h-full")}>
             <KeypadButton value={"("} button_type={ButtonType::Primary} /> 
             <KeypadButton value={")"} button_type={ButtonType::Primary} /> 
-            <KeypadButton value={"C"} button_type={ButtonType::Violet} /> 
-            <KeypadButton value={"CE"} button_type={ButtonType::Violet} /> 
+            <KeypadButton value={"C"} button_type={ButtonType::Action} /> 
+            <KeypadButton value={"CE"} button_type={ButtonType::Action} /> 
 
             <KeypadButton value={"x²"} button_type={ButtonType::Primary} /> 
             <KeypadButton value={"√"} button_type={ButtonType::Primary} /> 
