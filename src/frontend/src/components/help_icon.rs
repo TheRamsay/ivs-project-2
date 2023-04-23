@@ -1,11 +1,9 @@
-use std::fmt::format;
 
-use gloo_console::{log, externs::log};
-use web_sys::MouseEvent;
-use yew::{function_component, Html, html, Properties, classes, Callback, AttrValue};
-use yewdux::{prelude::use_store, dispatch};
+use gloo_console::log;
+use yew::{function_component, Html, html, classes, };
+use yewdux::{prelude::use_store};
 
-use crate::{app::{AppState}, services::state::{switch_theme}};
+use crate::{app::{AppState}, services::state::{ show_helper}};
 
 
 #[function_component(HelpIcon)]
@@ -14,7 +12,9 @@ pub fn help_icon() -> Html {
 
     let onclick = {
         move |_| {
-            dispatch.reduce_mut(|state| switch_theme(state))
+            log!(format!("{:?}", state.show_femboy_helper));
+
+            dispatch.reduce_mut(|state| show_helper(state))
         }
     };
 

@@ -13,6 +13,7 @@ use crate::components::keypad::{Keypad};
 use crate::components::display::{Display};
 use crate::components::theme_switcher::{ThemeSwitcher};
 use crate::components::help_icon::{HelpIcon};
+use crate::components::femboy_helper::{FemboyHelper};
 
 use crate::parse_and_eval;
 use crate::services::state::{expression_add, expression_pop, expression_add_many, expression_clear};
@@ -23,6 +24,7 @@ pub struct AppState{
     pub expression: Vec<String>,
     pub result: Vec<String> ,
     pub dark_mode: bool ,
+    pub show_femboy_helper: bool ,
 }
 
 #[function_component(App)]
@@ -31,8 +33,11 @@ pub fn app() -> Html {
 
     let document = web_sys::window().unwrap().document().unwrap();
     let color_theme = map_theme(state.dark_mode);
+    // let clonedState = state.clone();
 
     use_effect({
+        let state: Rc<AppState> = state.clone();
+
         move || {
             let onkeydown = {
                 Callback::from(move |ev: KeyboardEvent| {
@@ -45,7 +50,7 @@ pub fn app() -> Html {
                             dispatch.reduce_mut(|state| expression_pop(state));
                         },
                         "=" | "enter" => {
-                            let state = state.clone();
+                            let state: Rc<AppState> = state.clone();
                             let dispatch = dispatch.clone();
                             spawn_local(async move {
                                 if let Ok(result) = parse_and_eval(&state.expression.join(" ")).await {
@@ -103,6 +108,9 @@ pub fn app() -> Html {
                 <Display/>
                 <Keypad/>
             </div>
-        </div>
+                if state.show_femboy_helper {
+                    <FemboyHelper />
+                }
+            </div>
     }
 }

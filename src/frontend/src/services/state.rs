@@ -1,4 +1,5 @@
 
+use gloo_console::log;
 use yewdux::prelude::{Dispatch, use_store};
 
 use crate::app::AppState;
@@ -61,4 +62,9 @@ pub fn expression_clear(state: &mut AppState) {
 
 pub fn switch_theme(state: &mut AppState) {
     state.dark_mode = !state.dark_mode;
+}
+pub fn show_helper(state: &mut AppState) {
+    state.show_femboy_helper = !state.show_femboy_helper;
+    log!(format!("{:?}", state.show_femboy_helper));
+    
 }

@@ -3,3 +3,4 @@ pub mod keypad;
 pub mod display;
 pub mod theme_switcher;
 pub mod help_icon;
+pub mod femboy_helper;

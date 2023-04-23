@@ -49,7 +49,7 @@ pub fn expression(props: &Props) -> Html {
                     _ => ""
                 };
 
-                html! { <span class={classes!(font_color, "mr-2")}>{e}</span>}
+                html! { <span class={classes!(font_color, "mr-2","keypad-button-text")}>{e}</span>}
             }).collect::<Html>()
         }
     }
