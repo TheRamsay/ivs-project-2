@@ -34,7 +34,6 @@ pub fn remap_keyboard_signs(value: &str) -> Vec<&str> {
         "*" => vec!["×"],
         "÷" => vec!["/"],
         "x²" => vec!["^", "2"],
-        "√" => vec!["√"],
         "ln" => vec!["ln", "("],
         _ => vec![value],
     }
