@@ -17,6 +17,7 @@ pub enum MathExpr {
     MulExprMultiple(Vec<MathExpr>),
     DivExpr(Box<MathExpr>, Box<MathExpr>),
     PowExpr(Box<MathExpr>, Box<MathExpr>),
+    RootExpr(Box<MathExpr>, Box<MathExpr>),
     FactExpr(Box<MathExpr>),
     LnExpr(Box<MathExpr>),
     AbsExpr(Box<MathExpr>),
@@ -102,12 +103,25 @@ impl MathExpr {
             MathExpr::PowExpr(a, b) => {
                 let (a, b) = (a.eval(), b.eval());
                 if let (Some(a), Some(b)) = (a, b) {
-                    // We need to make sure the operation make sense
-                    // (no fractional exponents on negatice numbers).
-                    if a.is_sign_negative() && b != b.round() {
-                        None
+                    let (a, b) = (a.to_f64(), b.to_f64());
+                    if let (Some(a), Some(b)) = (a, b) {
+                        Decimal::from_f64_retain(a.powf(b))
                     } else {
-                        a.checked_powd(b)
+                        None
+                    }
+                } else {
+                    None
+                }
+            }
+
+            MathExpr::RootExpr(a, b) => {
+                let (a, b) = (a.eval(), b.eval());
+                if let (Some(a), Some(b)) = (a, b) {
+                    let (a, b) = (a.to_f64(), b.to_f64());
+                    if let (Some(a), Some(b)) = (a, b) {
+                        Decimal::from_f64_retain(b.powf(1f64 / a))
+                    } else {
+                        None
                     }
                 } else {
                     None
@@ -282,6 +296,24 @@ mod tests {
         let expr = PowExpr(box_number("3.5"), Box::new(exp));
         let value = expr.eval().unwrap();
         assert_eq!(format!("{value:.5}"), "1.07317");
+
+        let expr = PowExpr(
+            box_number("9"),
+            Box::new(DivExpr(box_number("1"), box_number("2"))),
+        );
+        assert_eq!(expr.eval().unwrap(), dec!(3));
+    }
+
+    #[test]
+    fn root_expr() {
+        let expr = RootExpr(box_number("3"), box_number("8"));
+        assert_eq!(expr.eval().unwrap(), dec!(2));
+        let expr = RootExpr(box_number("0"), box_number("8"));
+        assert!(expr.eval().is_none());
+        let expr = RootExpr(box_number("-3"), box_number("8"));
+        assert_eq!(expr.eval().unwrap(), dec!(0.5));
+        let expr = RootExpr(box_number("1"), box_number("8"));
+        assert_eq!(expr.eval().unwrap(), dec!(8));
     }
 
     #[test]

@@ -23,7 +23,7 @@ lazy_static! {
         .op(Op::infix(Rule::multiplication_op, Assoc::Left)
             | Op::infix(Rule::division_op, Assoc::Left)
             | Op::infix(Rule::modulo_op, Assoc::Left))
-        .op(Op::infix(Rule::power_op, Assoc::Left))
+        .op(Op::infix(Rule::power_op, Assoc::Left) | Op::infix(Rule::root_op, Assoc::Left))
         .op(Op::postfix(Rule::factorial_op))
         .op(Op::prefix(Rule::abs_op))
         .op(Op::prefix(Rule::ln_op))
@@ -92,6 +92,7 @@ fn parse_pairs(input_pairs: Pairs<Rule>) -> Result<MathExpr, pest::error::Error<
                 Rule::division_op => Ok(DivExpr(Box::new(left), Box::new(right))),
                 Rule::modulo_op => Ok(ModExpr(Box::new(left), Box::new(right))),
                 Rule::power_op => Ok(PowExpr(Box::new(left), Box::new(right))),
+                Rule::root_op => Ok(RootExpr(Box::new(left), Box::new(right))),
                 _ => unreachable!("{}", INTERNAL_ERROR_MSG),
             }
         })
