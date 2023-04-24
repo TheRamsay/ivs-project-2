@@ -4,7 +4,7 @@ use crate::{components::keypad_button::{KeypadButton, ButtonType, ButtonSize}};
 #[function_component(Keypad)]
 pub fn keypad() -> Html {
     html! {
-        <div class={classes!("grid", "grid-cols-4", "gap-4", "min-w-full", "min-h-full")}>
+        <div class={classes!("grow", "grid", "grid-cols-4", "gap-4", "w-full", "h-full")}>
             <KeypadButton value={"("} button_type={ButtonType::Primary} /> 
             <KeypadButton value={")"} button_type={ButtonType::Primary} /> 
             <KeypadButton value={"C"} button_type={ButtonType::Action} /> 

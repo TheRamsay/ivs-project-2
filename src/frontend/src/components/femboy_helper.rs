@@ -21,14 +21,11 @@ pub fn femboy_helper() -> Html {
         }
     };
 
-
-
     html! {
-        <div class={classes!(       )}   >
+        // <div class={classes!(       )}   >
         <div class={classes!("flex", "flex-col", "items-center","absolute","inset-0","z-10",)} {onclick}>
-
-             <img src="https://media.discordapp.net/attachments/1035650959512174604/1099761912419455077/fevix.png" width="600" height="300"/> 
-
+        <div class={classes!("fixed", "bottom-0", "left-0",)} >
+            <img src="https://media.discordapp.net/attachments/1035650959512174604/1099761912419455077/fevix.png" width="600" height="300"/> 
         </div>
         </div>
     }

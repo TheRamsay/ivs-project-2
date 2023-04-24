@@ -9,34 +9,15 @@ use crate::{app::{AppState}, services::state::{switch_theme}};
 
 
 fn map_theme(is_darkmode:bool) ->  Vec<String> {
-    
-    let dark_theme =  [ "text-zinc-300"];
-    let light_theme =  [ "text-zinc-700"];
-    
-    let mut theme: Vec<String> = Vec::new();
-
     if is_darkmode {
-        for param in dark_theme.iter(){
-            theme.push(param.to_string())
-        }
-        return   theme;
-    }else{
-        for param in light_theme.iter(){
-            theme.push(param.to_string())
-        }
-        return  theme;
+        vec![ "text-zinc-300".to_string() ]
+    } else  {
+        vec![ "text-zinc-700".to_string() ]
     }
-    // match is_darkmode {
-    //     true => ["bg-gray-700", "text-zinc-300"],
-    //     false => ["bg-gray-300", "text-zinc-300"],
-    // }
 }
 
 fn map_text(is_darkmode:bool) -> &'static str {
-    match is_darkmode {
-        true => "Dark",
-        false => "Light",
-    }
+    if is_darkmode { "Dark" } else { "Light" }
 }
 
 #[function_component(ThemeSwitcher)]

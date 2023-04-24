@@ -65,6 +65,5 @@ pub fn switch_theme(state: &mut AppState) {
 }
 pub fn show_helper(state: &mut AppState) {
     state.show_femboy_helper = !state.show_femboy_helper;
-    log!(format!("{:?}", state.show_femboy_helper));
     
 }

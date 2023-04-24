@@ -1,4 +1,5 @@
 use std::rc::Rc;
+use std::vec;
 
 use gloo_console::log;
 use gloo::events::EventListener;
@@ -8,6 +9,9 @@ use web_sys::{KeyboardEvent, window, Event};
 use yew::{function_component, Html, html, classes, use_state, AttrValue, Callback, use_effect_with_deps, use_effect};
 use yewdux::prelude::use_store;
 use yewdux::store::Store;
+use rand::Rng;
+use rand;
+use rand::prelude::*;
 
 use crate::components::keypad::{Keypad};
 use crate::components::display::{Display};
@@ -19,12 +23,18 @@ use crate::parse_and_eval;
 use crate::services::state::{expression_add, expression_pop, expression_add_many, expression_clear};
 use crate::services::utils::{remap_keyboard_signs, is_legal_key};
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Store)]
+#[derive(Debug, Clone, PartialEq, Eq, Store)]
 pub struct AppState{
     pub expression: Vec<String>,
     pub result: Vec<String> ,
     pub dark_mode: bool ,
     pub show_femboy_helper: bool ,
+}
+
+impl Default for AppState {
+    fn default() -> Self {
+        Self { expression: vec![], result: vec![], dark_mode: true, show_femboy_helper: false }
+    }
 }
 
 #[function_component(App)]
@@ -33,7 +43,6 @@ pub fn app() -> Html {
 
     let document = web_sys::window().unwrap().document().unwrap();
     let color_theme = map_theme(state.dark_mode);
-    // let clonedState = state.clone();
 
     use_effect({
         let state: Rc<AppState> = state.clone();
@@ -50,6 +59,15 @@ pub fn app() -> Html {
                             dispatch.reduce_mut(|state| expression_pop(state));
                         },
                         "=" | "enter" => {
+                            if state.expression == vec!["1", "+", "+"] {
+                                dispatch.reduce_mut(|s| {
+                                    let mut rng = rand::thread_rng();
+                                    let kasparek_cm = rng.gen_range(0..50);
+                                    s.result = vec!["/kasparek".to_owned()];
+                                    s.expression = vec![format!("{}cm", kasparek_cm)];
+                                });
+                                return;
+                            }
                             let state: Rc<AppState> = state.clone();
                             let dispatch = dispatch.clone();
                             spawn_local(async move {
@@ -92,25 +110,19 @@ pub fn app() -> Html {
         } else {
             vec![ "from-slate-100".to_owned(), "to-violet-300".to_owned()] 
         }
-        // match is_darkmode {
-        //     true => ["bg-gray-700", "text-zinc-300"],
-        //     false => ["bg-gray-300", "text-zinc-300"],
-        // }
     }
 
     html! {
-        <div class={classes!("app", "bg-gradient-to-b", color_theme, "h-max")}>
-            <div class={classes!("flex", "justify-between","items-start", "py-5")}>
+        <div class={classes!("app", "bg-gradient-to-b", color_theme, "h-screen", "p-5", "flex", "flex-col")}>
+            <div class={classes!("flex-none", "flex", "justify-between","items-start", "py-5")}>
                 <HelpIcon/>
                 <ThemeSwitcher/>
             </div>
-            <div class={classes!("flex", "flex-col", "items-center", "py-5")}>
-                <Display/>
-                <Keypad/>
-            </div>
-                if state.show_femboy_helper {
-                    <FemboyHelper />
-                }
-            </div>
+            <Display/>
+            <Keypad/>
+            if state.show_femboy_helper {
+                <FemboyHelper />
+            }
+        </div>
     }
 }

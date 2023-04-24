@@ -11,6 +11,7 @@ pub fn help_icon() -> Html {
     let (state, dispatch) = use_store::<AppState>();
 
     let onclick = {
+        let state = state.clone();
         move |_| {
             log!(format!("{:?}", state.show_femboy_helper));
 
@@ -18,10 +19,20 @@ pub fn help_icon() -> Html {
         }
     };
 
+    fn map_theme(is_darkmode:bool) ->  Vec<String> {
+        if is_darkmode {
+            vec![ "text-zinc-300".to_string() ]
+        } else  {
+            vec![ "text-zinc-700".to_string() ]
+        }
+    }
+
+    let color_theme = map_theme(state.dark_mode);
 
     html! {
         <div 
             class={classes!(
+                color_theme,
                 "w-24",
                 "h-24", 
                 "flex", 

@@ -3,7 +3,7 @@ use std::rc::Rc;
 use gloo_console::log;
 use yew::prelude::*;
 use yew::virtual_dom::AttrValue;
-use yewdux::prelude::use_store;
+use yewdux::{prelude::use_store, dispatch};
 
 use crate::{app::{AppState}, services::utils::is_operator};
 
@@ -11,7 +11,11 @@ use crate::{app::{AppState}, services::utils::is_operator};
 pub fn display() -> Html {
     let (state, dispatch) = use_store::<AppState>();
 
-    log!(format!("{:?}", state.expression));
+    let text_color = if state.dark_mode {
+        "text-zinc-300"
+    } else {
+        "text-black"
+    };
 
     html! {
         <div class={classes!("text-4xl", "font-semibold", "w-full", "text-slate-300", "mb-6", "flex", "flex-col")}>
@@ -19,7 +23,7 @@ pub fn display() -> Html {
                 <Expression value={state.result.clone()}/>
             </div>
             <div class={classes!("flex", "justify-between", "items-center")}>
-                <div class={classes!("mr-4", "text-7xl")}>
+                <div class={classes!("mr-4", "text-7xl", text_color)}>
                     {"="}
                 </div>
                 <div class={classes!("result-display", "break-all", "text-4xl", "font-bold")}>
@@ -37,16 +41,23 @@ pub struct Props {
 
 #[function_component(Expression)]
 pub fn expression(props: &Props) -> Html {
+    let (state, dispatch) = use_store::<AppState>();
+
     html! {
         {
             props.value.iter().map(|e|{
                 let font_color = match e.as_str() {
+                    "error" => "text-red-500",
                     // Parentheses coloring
                     "(" | ")" => "text-blue-500",
                     // Operators
                     "+" | "-" | "×" | "/" | "!" | "abs" | "^" | "√" => "text-violet-500",
                     // Other characters are white
-                    _ => ""
+                    _ => if state.dark_mode {
+                        "text-zinc-300"
+                    } else {
+                        "text-black"
+                    }
                 };
 
                 html! { <span class={classes!(font_color, "mr-2","keypad-button-text")}>{e}</span>}

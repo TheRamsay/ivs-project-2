@@ -1,6 +1,8 @@
 use wasm_bindgen_futures::spawn_local;
 use yew::{function_component, Html, html, Properties, classes};
 use yewdux::{prelude::use_store};
+use rand::Rng;
+use rand;
 
 use crate::{app::{AppState}, services::{state::{expression_pop, expression_clear, expression_add_many}, utils::remap_keyboard_signs}, parse_and_eval};
 
@@ -89,6 +91,17 @@ pub fn keypad_button(props: &Props) -> Html {
                     // TODO: write a nicer function to reuse this block in keypad_buttons.rs
                     let state = state.clone();
                     let dispatch = dispatch.clone();
+
+                    if state.expression == vec!["1", "+", "+"] {
+                        dispatch.reduce_mut(|s| {
+                            let mut rng = rand::thread_rng();
+                            let kasparek_cm = rng.gen_range(0..50);
+                            s.result = vec!["/kasparek".to_owned()];
+                            s.expression = vec![format!("{}cm", kasparek_cm)];
+                        });
+                        return;
+                    }
+
                     spawn_local(async move {
                         if let Ok(result) = parse_and_eval(&state.expression.join(" ")).await {
                             let result = result.as_string().unwrap();
@@ -116,13 +129,14 @@ pub fn keypad_button(props: &Props) -> Html {
         <div 
             class={classes!(
                 bg_color,
+                "block",
                 "flex", 
                 "justify-center", 
                 "items-center", 
                 "rounded-lg", 
-                "w-auto",
+                "w-full",
                 "text-4xl", 
-                "h-24", 
+                "h-full", 
                 text_color,
                 size,
                 "font-semibold", 
