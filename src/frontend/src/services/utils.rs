@@ -26,7 +26,7 @@ pub const ALLOWED_KEYS: &'static [&str; 28] = &[
     "7",
     "8",
     "9",
-    "0"
+    "0",
 ];
 
 pub fn remap_keyboard_signs(value: &str) -> Vec<&str> {
@@ -34,9 +34,8 @@ pub fn remap_keyboard_signs(value: &str) -> Vec<&str> {
         "*" => vec!["×"],
         "÷" => vec!["/"],
         "x²" => vec!["^", "2"],
-        "√" => vec!["^", "(", "1", "/", "2", ")"],
         "ln" => vec!["ln", "("],
-        _ => vec![value]
+        _ => vec![value],
     }
 }
 
@@ -53,3 +52,4 @@ pub fn is_operator(value: &String) -> bool {
 pub fn is_number(value: &String) -> bool {
     value.len() > 0 && value.chars().all(|c| c == '.' || c.is_numeric())
 }
+

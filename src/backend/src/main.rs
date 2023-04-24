@@ -33,5 +33,6 @@ fn parse_and_eval(input: &str) -> Result<String, String> {
         .map_err(|e| format!("Parsing error: {}", e.to_string()))?
         .eval()
         .ok_or("Evaluation error: Invalid mathematical operation")?
+        .normalize()
         .to_string())
 }

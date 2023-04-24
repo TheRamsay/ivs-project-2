@@ -33,6 +33,7 @@ infix_op = _{
   | division_op 
   | power_op 
   | modulo_op
+  | root_op
 }
 addition_op = { "+" }
 subtraction_op = { "-" }
@@ -40,6 +41,7 @@ multiplication_op = { "*" | "×" }
 division_op = { "/" | "÷" }
 power_op = { "^" }
 modulo_op = { "%" }
+root_op = { "√" }
 
 
 subexpr = { unary_subexpr ~ (infix_op ~ unary_subexpr)* }
