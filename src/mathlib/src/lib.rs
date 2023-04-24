@@ -7,7 +7,7 @@ use rust_decimal_macros::dec;
 /// because you cannot store self-containing structures
 /// on the stack.
 ///
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum MathExpr {
     AddExpr(Box<MathExpr>, Box<MathExpr>),
     SubExpr(Box<MathExpr>, Box<MathExpr>),
@@ -330,6 +330,8 @@ mod tests {
         let expr = LnExpr(box_number("-1"));
         assert_eq!(expr.eval(), None);
         let expr = LnExpr(box_number("-897.5"));
+        assert_eq!(expr.eval(), None);
+        let expr = FactExpr(box_number("7.5"));
         assert_eq!(expr.eval(), None);
     }
 
