@@ -1,6 +1,7 @@
 use mathlib::MathExpr::*;
 use rust_decimal::Decimal;
 use rust_decimal_macros::dec;
+use std::error::Error;
 use std::io::{self, Read};
 use std::str::FromStr;
 
@@ -18,8 +19,7 @@ fn stddev(numbers: &Vec<Decimal>) -> Option<Decimal> {
         )),
         len.clone(),
     ))
-    .eval()
-    .unwrap();
+    .eval()?;
     let x_bar = Box::new(Number(x_bar));
 
     // 1 / (N - 1)
@@ -52,17 +52,15 @@ fn stddev(numbers: &Vec<Decimal>) -> Option<Decimal> {
     stddev.eval()
 }
 
-fn main() -> io::Result<()> {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut numbers = String::new();
     io::stdin().read_to_string(&mut numbers)?;
-    let numbers: Vec<Decimal> = numbers
+    let numbers = numbers
         .split_whitespace()
-        .map(|n| Decimal::from_str(n).unwrap())
-        .collect();
+        .map(|n| Decimal::from_str(n))
+        .collect::<Result<Vec<Decimal>, _>>()?;
 
-    if let Some(s) = stddev(&numbers) {
-        println!("{}", s);
-    }
+    println!("{}", stddev(&numbers).ok_or("Evaluation error.")?);
     Ok(())
 }
 
