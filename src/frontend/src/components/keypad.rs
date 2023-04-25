@@ -1,4 +1,4 @@
-use yew::{function_component, Html, html, classes, Callback, Properties, AttrValue};
+use yew::{function_component, Html, html, classes};
 use crate::{components::keypad_button::{KeypadButton, ButtonType}};
 
 #[function_component(Keypad)]

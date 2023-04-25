@@ -78,6 +78,11 @@ pub fn show_helper(state: &mut AppState) {
     state.show_helper = !state.show_helper;
 }
 
+/// Show help page with given index
+pub fn show_help_page(state: &mut AppState, page: usize) {
+    state.help_page = page;
+}
+
 /// 
 pub fn handle_interaction(value: &str, state: Rc<AppState>, dispatch: Dispatch<AppState>) {
     // Clear errors from previous evaluation

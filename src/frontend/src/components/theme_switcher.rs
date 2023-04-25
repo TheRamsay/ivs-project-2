@@ -1,4 +1,4 @@
-use yew::{function_component, Html, html, Properties, classes, Callback, AttrValue};
+use yew::{function_component, Html, html, classes};
 use yewdux::{prelude::use_store};
 
 use crate::{app::{AppState}, services::state::{switch_theme}};

@@ -1,11 +1,7 @@
-use std::rc::Rc;
-
-use gloo_console::log;
 use yew::prelude::*;
-use yew::virtual_dom::AttrValue;
-use yewdux::{prelude::use_store, dispatch};
+use yewdux::{prelude::use_store};
 
-use crate::{app::{AppState}, services::utils::is_operator};
+use crate::{app::{AppState}};
 
 /// Component for displaying the result and expression
 #[function_component(Display)]
