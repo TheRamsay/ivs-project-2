@@ -1,34 +1,86 @@
+//! This library provides functionality for recursively evaluating mathematical expressions.
+//! It includes an enum `MathExpr` able to represent any mathematical expression.
+//! The MathExpr enum includes variants
+//! for many mathematical operations such as addition, multiplication,
+//! exponentiation, factorial, and others. The `Number` variant holds a value of the type
+//! `Decimal` from the [rust_decimal](https://crates.io/crates/rust_decimal) crate,
+//! which allow for precise decimal arithmetic. This is done for the reason of eliminating
+//! rounding errors, which are present when working with regular `f32` and `f64` types.
+//!
+//! The `MathExpr` type provides a method called `eval` to recursively evaluate a given
+//! mathematical expression.
+//!
+//! # Example
+//!
+//! ```rust
+//! # use rust_decimal_macros::dec;
+//! use mathlib::MathExpr::{AddExpr, MulExpr, Number};
+//!
+//! let two = Box::new(Number(dec!(2)));
+//! let three = Box::new(Number(dec!(3)));
+//! let four = Box::new(Number(dec!(4)));
+//!
+//! // (2 + 3) * 4
+//! let expr = MulExpr(
+//!     Box::new(AddExpr(two, three)),
+//!     four
+//! );
+//! assert_eq!(expr.eval(), Some(dec!(20)));
+//! ```
+
 use rust_decimal::prelude::*;
 use rust_decimal_macros::dec;
 
 /// Enum representing any mathematical expression.
 ///
-/// Some of the operands must be wrapped in `Box<T>`,
-/// because you cannot store self-containing structures
-/// on the stack.
-///
+/// Most operands must be wrapped in `Box<T>`,
+/// because self-containing structures cannot be stored on the stack.
 #[derive(Debug, Clone)]
 pub enum MathExpr {
+    /// Adds two operands.
     AddExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Subtracts second operand from first one.
     SubExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Multiplies two operands.
     MulExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Calculates the remainder of dividing first operand by second.
     ModExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Adds all operands together.
+    ///
+    /// This variant exists for optimization purposes, to avoid huge expression trees
+    /// when constructing long sums.
     AddExprMultiple(Vec<MathExpr>),
+    /// Multiples all operands together.
+    ///
+    /// Like `AddExprMultiple`, this exists for optimization.
     MulExprMultiple(Vec<MathExpr>),
+    /// Divides first operand by second.
     DivExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Raises first operand to the power of second operand.
     PowExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Calculates n-th root of second operand, where n is given by the first operand.
     RootExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Calculates factorial of operand. Works only for non-negative whole numbers.
     FactExpr(Box<MathExpr>),
+    /// Calculates the natural log of operand.
     LnExpr(Box<MathExpr>),
+    /// Calculates absolute value of operand.
     AbsExpr(Box<MathExpr>),
+    /// Calculates the square root of operand, faster than `RootExpr`.
     SqrtExpr(Box<MathExpr>),
+    /// Inverts the sign of operand.
     NegExpr(Box<MathExpr>),
+    /// This variant represents a constant value, of the type `Decimal`.
+    ///
+    /// More info about the `Decimal` type can be found at
+    /// [`rust_decimal` documentation](https://docs.rs/rust_decimal/latest/rust_decimal/)
     Number(Decimal),
 }
 
 impl MathExpr {
-    /// Evaluates given expression and returns `Some` of value
-    /// or `None`, if expression is invalid (such as division by zero)
+    /// Recursively evaluates given expression and returns `Some` of value
+    /// or `None`, if expression is invalid (such as division by zero, log of negative
+    /// value, arithmetic overflow, etc).
     pub fn eval(&self) -> Option<Decimal> {
         match self {
             MathExpr::AddExpr(a, b) => {
