@@ -1,17 +1,15 @@
 use std::rc::Rc;
 use std::vec;
 
-use gloo_console::log;
 use gloo::events::EventListener;
 use wasm_bindgen::{JsCast, UnwrapThrowExt};
 use wasm_bindgen_futures::spawn_local;
-use web_sys::{KeyboardEvent, window, Event};
-use yew::{function_component, Html, html, classes, use_state, AttrValue, Callback, use_effect_with_deps, use_effect};
+use web_sys::{KeyboardEvent};
+use yew::{function_component, Html, html, classes, Callback, use_effect};
 use yewdux::prelude::use_store;
 use yewdux::store::Store;
 use rand::Rng;
 use rand;
-use rand::prelude::*;
 
 use crate::components::keypad::{Keypad};
 use crate::components::display::{Display};
@@ -20,7 +18,7 @@ use crate::components::help_icon::{HelpIcon};
 use crate::components::femboy_helper::{FemboyHelper};
 
 use crate::parse_and_eval;
-use crate::services::state::{expression_add, expression_pop, expression_add_many, expression_clear};
+use crate::services::state::{expression_pop, expression_add_many, expression_clear};
 use crate::services::utils::{remap_keyboard_signs, is_legal_key};
 
 #[derive(Debug, Clone, PartialEq, Eq, Store)]
@@ -29,11 +27,12 @@ pub struct AppState{
     pub result: Vec<String> ,
     pub dark_mode: bool ,
     pub show_femboy_helper: bool ,
+    pub help_page : usize,
 }
 
 impl Default for AppState {
     fn default() -> Self {
-        Self { expression: vec![], result: vec![], dark_mode: true, show_femboy_helper: false }
+        Self { expression: vec![], result: vec![], dark_mode: true, show_femboy_helper: false, help_page:0  }
     }
 }
 

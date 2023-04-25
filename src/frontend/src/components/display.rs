@@ -1,15 +1,15 @@
-use std::rc::Rc;
 
-use gloo_console::log;
+
+
 use yew::prelude::*;
-use yew::virtual_dom::AttrValue;
-use yewdux::{prelude::use_store, dispatch};
 
-use crate::{app::{AppState}, services::utils::is_operator};
+use yewdux::{prelude::use_store};
+
+use crate::{app::{AppState}};
 
 #[function_component(Display)]
 pub fn display() -> Html {
-    let (state, dispatch) = use_store::<AppState>();
+    let (state, _dispatch) = use_store::<AppState>();
 
     let text_color = if state.dark_mode {
         "text-zinc-300"
@@ -41,7 +41,7 @@ pub struct Props {
 
 #[function_component(Expression)]
 pub fn expression(props: &Props) -> Html {
-    let (state, dispatch) = use_store::<AppState>();
+    let (state, _dispatch) = use_store::<AppState>();
 
     html! {
         {
