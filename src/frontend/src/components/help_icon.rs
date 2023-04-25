@@ -5,19 +5,13 @@ use yewdux::{prelude::use_store};
 
 use crate::{app::{AppState}, services::state::{ show_helper}};
 
-
+/// Interactive help icon component
 #[function_component(HelpIcon)]
 pub fn help_icon() -> Html {
     let (state, dispatch) = use_store::<AppState>();
 
-    let onclick = {
-        let state = state.clone();
-        move |_| {
-            log!(format!("{:?}", state.show_femboy_helper));
-
-            dispatch.reduce_mut(|state| show_helper(state))
-        }
-    };
+    // Handles click on the help icon
+    let onclick = move |_| dispatch.reduce_mut(|state| show_helper(state));
 
     fn map_theme(is_darkmode:bool) ->  Vec<String> {
         if is_darkmode {
@@ -52,9 +46,7 @@ pub fn help_icon() -> Html {
         <span class={classes!("material-symbols-outlined", "text-red-500")}>
             {"support"}
         </span>
-            
             <span class={"keypad-button-text"}>{"Pomoc"}</span>
-            
             </div>
         </div>
     }
