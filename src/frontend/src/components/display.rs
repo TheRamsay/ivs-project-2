@@ -7,9 +7,10 @@ use yewdux::{prelude::use_store, dispatch};
 
 use crate::{app::{AppState}, services::utils::is_operator};
 
+/// Component for displaying the result and expression
 #[function_component(Display)]
 pub fn display() -> Html {
-    let (state, dispatch) = use_store::<AppState>();
+    let (state, _) = use_store::<AppState>();
 
     let text_color = if state.dark_mode {
         "text-zinc-300"
@@ -19,7 +20,7 @@ pub fn display() -> Html {
 
     html! {
         <div class={classes!("text-4xl", "font-semibold", "w-full", "text-slate-300", "mb-6", "flex", "flex-col")}>
-            <div class={classes!("result-display", "flex", "justify-end", "break-all")}>
+            <div class={classes!("result-display", "text-end", "break-all")}>
                 <Expression value={state.result.clone()}/>
             </div>
             <div class={classes!("flex", "justify-between", "items-center")}>
@@ -36,12 +37,13 @@ pub fn display() -> Html {
 
 #[derive(Properties, Clone, PartialEq, Eq)]
 pub struct Props {
+    /// The expression to display
     pub value: Vec<String> 
 }
-
+/// Component for displaying an expression
 #[function_component(Expression)]
 pub fn expression(props: &Props) -> Html {
-    let (state, dispatch) = use_store::<AppState>();
+    let (state, _) = use_store::<AppState>();
 
     html! {
         {
@@ -52,7 +54,7 @@ pub fn expression(props: &Props) -> Html {
                     "(" | ")" => "text-blue-500",
                     // Operators
                     "+" | "-" | "×" | "/" | "!" | "abs" | "^" | "√" => "text-violet-500",
-                    // Other characters are white
+                    // Other characters
                     _ => if state.dark_mode {
                         "text-zinc-300"
                     } else {

@@ -1,14 +1,9 @@
-use std::fmt::format;
-
-use gloo_console::{log, externs::log};
-use web_sys::MouseEvent;
 use yew::{function_component, Html, html, Properties, classes, Callback, AttrValue};
-use yewdux::{prelude::use_store, dispatch};
+use yewdux::{prelude::use_store};
 
 use crate::{app::{AppState}, services::state::{switch_theme}};
 
-
-fn map_theme(is_darkmode:bool) ->  Vec<String> {
+fn map_theme(is_darkmode :bool) ->  Vec<String> {
     if is_darkmode {
         vec![ "text-zinc-300".to_string() ]
     } else  {
@@ -20,15 +15,12 @@ fn map_text(is_darkmode:bool) -> &'static str {
     if is_darkmode { "Dark" } else { "Light" }
 }
 
+/// Component for the theme switcher
 #[function_component(ThemeSwitcher)]
 pub fn theme_switcher() -> Html {
     let (state, dispatch) = use_store::<AppState>();
 
-    let onclick = {
-        move |_| {
-            dispatch.reduce_mut(|state| switch_theme(state))
-        }
-    };
+    let onclick = move |_| dispatch.reduce_mut(|state| switch_theme(state));
 
     let color_theme = map_theme(state.dark_mode);
     let button_text = map_text(state.dark_mode);
