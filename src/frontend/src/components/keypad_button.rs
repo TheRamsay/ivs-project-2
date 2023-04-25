@@ -1,13 +1,7 @@
-use std::{result, clone};
-
-use wasm_bindgen_futures::spawn_local;
-use web_sys::MouseEvent;
 use yew::{function_component, Html, html, Properties, classes, Callback};
-use yewdux::{prelude::use_store, dispatch};
-use rand::Rng;
-use rand;
+use yewdux::{prelude::use_store};
 
-use crate::{app::{AppState}, services::{state::{expression_pop, expression_clear, expression_add_many, handle_interaction}, utils::remap_keyboard_signs}, parse_and_eval};
+use crate::{app::{AppState}, services::{state::{handle_interaction}}};
 
 /// Color of the button
 #[derive(Clone, Debug, PartialEq, Eq)]

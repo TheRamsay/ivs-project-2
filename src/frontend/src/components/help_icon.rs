@@ -1,5 +1,3 @@
-
-use gloo_console::log;
 use yew::{function_component, Html, html, classes, };
 use yewdux::{prelude::use_store};
 
