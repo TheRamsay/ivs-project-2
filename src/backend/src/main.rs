@@ -3,7 +3,7 @@
     windows_subsystem = "windows"
 )]
 
-use tauri::{Manager, PhysicalSize};
+use tauri::{Manager, PhysicalSize, LogicalSize};
 
 mod parser;
 use parser::parse_input;
@@ -12,8 +12,8 @@ fn main() {
     tauri::Builder::default()
         .setup(|app| {
             let main_window = app.get_window("main").expect("Couldn't get the main window.");
-            // main_window.set_min_size().expect("Couldn't change the windows dimensions.");
-            main_window.set_size(PhysicalSize { height: 1600, width: 2400}).expect("Couldn't change the windows dimensions.");
+            main_window.set_min_size(Some(LogicalSize::new(460.0, 820.0))).expect("Couldn't set the minimum size of the window.");
+            main_window.set_size(PhysicalSize { height: 900, width: 600}).expect("Couldn't change the windows dimensions.");
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![parse_and_eval])
