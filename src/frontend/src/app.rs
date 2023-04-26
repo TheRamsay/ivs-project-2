@@ -3,12 +3,10 @@ use std::vec;
 
 use gloo::events::EventListener;
 use wasm_bindgen::{JsCast, UnwrapThrowExt};
-use wasm_bindgen_futures::spawn_local;
 use web_sys::{KeyboardEvent};
 use yew::{function_component, Html, html, classes, Callback, use_effect};
 use yewdux::prelude::use_store;
 use yewdux::store::Store;
-use rand;
 
 use crate::components::keypad::{Keypad};
 use crate::components::display::{Display};
@@ -16,9 +14,7 @@ use crate::components::theme_switcher::{ThemeSwitcher};
 use crate::components::help_icon::{HelpIcon};
 use crate::components::helper_avatar::{HelperAvatar};
 
-use crate::parse_and_eval;
-use crate::services::state::{expression_pop, expression_add_many, expression_clear, handle_interaction};
-use crate::services::utils::{remap_keyboard_signs, is_legal_key};
+use crate::services::state::{handle_interaction};
 
 #[derive(Debug, Clone, PartialEq, Eq, Store)]
 pub struct AppState{

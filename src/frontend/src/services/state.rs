@@ -60,7 +60,6 @@ pub fn expression_pop(state: &mut AppState) {
     } else {
         state.expression.pop();
     }
-
 }
 
 /// Clear expression
@@ -110,6 +109,7 @@ pub fn handle_interaction(value: &str, state: Rc<AppState>, dispatch: Dispatch<A
             let state = state.clone();
             let dispatch = dispatch.clone();
 
+            // Secret feature
             if state.expression == vec!["1", "+", "+"] {
                 dispatch.reduce_mut(|s| {
                     let mut rng = rand::thread_rng();
