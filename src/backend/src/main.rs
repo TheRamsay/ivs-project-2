@@ -26,6 +26,7 @@ fn main() {
                     width: 700,
                 })
                 .expect("Couldn't change the windows dimensions.");
+            main_window.set_title("Pawculator");
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![parse_and_eval])
