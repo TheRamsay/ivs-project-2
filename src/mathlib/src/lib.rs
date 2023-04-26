@@ -1,33 +1,86 @@
+//! This library provides functionality for recursively evaluating mathematical expressions.
+//! It includes an enum `MathExpr` able to represent any mathematical expression.
+//! The MathExpr enum includes variants
+//! for many mathematical operations such as addition, multiplication,
+//! exponentiation, factorial, and others. The `Number` variant holds a value of the type
+//! `Decimal` from the [rust_decimal](https://crates.io/crates/rust_decimal) crate,
+//! which allow for precise decimal arithmetic. This is done for the reason of eliminating
+//! rounding errors, which are present when working with regular `f32` and `f64` types.
+//!
+//! The `MathExpr` type provides a method called `eval` to recursively evaluate a given
+//! mathematical expression.
+//!
+//! # Example
+//!
+//! ```rust
+//! # use rust_decimal_macros::dec;
+//! use mathlib::MathExpr::{AddExpr, MulExpr, Number};
+//!
+//! let two = Box::new(Number(dec!(2)));
+//! let three = Box::new(Number(dec!(3)));
+//! let four = Box::new(Number(dec!(4)));
+//!
+//! // (2 + 3) * 4
+//! let expr = MulExpr(
+//!     Box::new(AddExpr(two, three)),
+//!     four
+//! );
+//! assert_eq!(expr.eval(), Some(dec!(20)));
+//! ```
+
 use rust_decimal::prelude::*;
 use rust_decimal_macros::dec;
 
 /// Enum representing any mathematical expression.
 ///
-/// Some of the operands must be wrapped in `Box<T>`,
-/// because you cannot store self-containing structures
-/// on the stack.
-///
-#[derive(Debug)]
+/// Most operands must be wrapped in `Box<T>`,
+/// because self-containing structures cannot be stored on the stack.
+#[derive(Debug, Clone)]
 pub enum MathExpr {
+    /// Adds two operands.
     AddExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Subtracts second operand from first one.
     SubExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Multiplies two operands.
     MulExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Calculates the remainder of dividing first operand by second.
     ModExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Adds all operands together.
+    ///
+    /// This variant exists for optimization purposes, to avoid huge expression trees
+    /// when constructing long sums.
     AddExprMultiple(Vec<MathExpr>),
+    /// Multiples all operands together.
+    ///
+    /// Like `AddExprMultiple`, this exists for optimization.
     MulExprMultiple(Vec<MathExpr>),
+    /// Divides first operand by second.
     DivExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Raises first operand to the power of second operand.
     PowExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Calculates n-th root of second operand, where n is given by the first operand.
+    RootExpr(Box<MathExpr>, Box<MathExpr>),
+    /// Calculates factorial of operand. Works only for non-negative whole numbers.
     FactExpr(Box<MathExpr>),
+    /// Calculates the natural log of operand.
     LnExpr(Box<MathExpr>),
+    /// Calculates absolute value of operand.
     AbsExpr(Box<MathExpr>),
+    /// Calculates the square root of operand, faster than `RootExpr`.
     SqrtExpr(Box<MathExpr>),
+    /// Inverts the sign of operand.
     NegExpr(Box<MathExpr>),
+    /// This variant represents a constant value, of the type `Decimal`.
+    ///
+    /// More info about the `Decimal` type can be found at
+    /// [`rust_decimal` documentation](https://docs.rs/rust_decimal/latest/rust_decimal/)
     Number(Decimal),
 }
 
 impl MathExpr {
-    /// Evaluates given expression and returns `Some` of value
-    /// or `None`, if expression is invalid (such as division by zero)
+    /// Recursively evaluates given expression and returns `Some` of value
+    /// or `None`, if expression is invalid (such as division by zero, log of negative
+    /// value, arithmetic overflow, etc).
     pub fn eval(&self) -> Option<Decimal> {
         match self {
             MathExpr::AddExpr(a, b) => {
@@ -102,12 +155,25 @@ impl MathExpr {
             MathExpr::PowExpr(a, b) => {
                 let (a, b) = (a.eval(), b.eval());
                 if let (Some(a), Some(b)) = (a, b) {
-                    // We need to make sure the operation make sense
-                    // (no fractional exponents on negatice numbers).
-                    if a.is_sign_negative() && b != b.round() {
-                        None
+                    let (a, b) = (a.to_f64(), b.to_f64());
+                    if let (Some(a), Some(b)) = (a, b) {
+                        Decimal::from_f64_retain(a.powf(b))
                     } else {
-                        a.checked_powd(b)
+                        None
+                    }
+                } else {
+                    None
+                }
+            }
+
+            MathExpr::RootExpr(a, b) => {
+                let (a, b) = (a.eval(), b.eval());
+                if let (Some(a), Some(b)) = (a, b) {
+                    let (a, b) = (a.to_f64(), b.to_f64());
+                    if let (Some(a), Some(b)) = (a, b) {
+                        Decimal::from_f64_retain(b.powf(1f64 / a))
+                    } else {
+                        None
                     }
                 } else {
                     None
@@ -282,6 +348,24 @@ mod tests {
         let expr = PowExpr(box_number("3.5"), Box::new(exp));
         let value = expr.eval().unwrap();
         assert_eq!(format!("{value:.5}"), "1.07317");
+
+        let expr = PowExpr(
+            box_number("9"),
+            Box::new(DivExpr(box_number("1"), box_number("2"))),
+        );
+        assert_eq!(expr.eval().unwrap(), dec!(3));
+    }
+
+    #[test]
+    fn root_expr() {
+        let expr = RootExpr(box_number("3"), box_number("8"));
+        assert_eq!(expr.eval().unwrap(), dec!(2));
+        let expr = RootExpr(box_number("0"), box_number("8"));
+        assert!(expr.eval().is_none());
+        let expr = RootExpr(box_number("-3"), box_number("8"));
+        assert_eq!(expr.eval().unwrap(), dec!(0.5));
+        let expr = RootExpr(box_number("1"), box_number("8"));
+        assert_eq!(expr.eval().unwrap(), dec!(8));
     }
 
     #[test]
@@ -330,6 +414,8 @@ mod tests {
         let expr = LnExpr(box_number("-1"));
         assert_eq!(expr.eval(), None);
         let expr = LnExpr(box_number("-897.5"));
+        assert_eq!(expr.eval(), None);
+        let expr = FactExpr(box_number("7.5"));
         assert_eq!(expr.eval(), None);
     }
 

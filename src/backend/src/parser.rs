@@ -1,3 +1,7 @@
+//! This module implements mathematical expression parsing using the Pratt parser generator
+//! from the [pest](https://pest.rs/) crate. The grammar is stored in the
+//! file `math.pest`, and the parser is generated once, during compilation.
+
 use mathlib::MathExpr;
 use MathExpr::*;
 
@@ -10,6 +14,7 @@ use pest_derive::Parser;
 use lazy_static::lazy_static;
 use rust_decimal::prelude::*;
 
+/// This is the parser struct, it is generated at compile-time by Pest.
 #[derive(Parser)]
 #[grammar = "math.pest"]
 struct MathExprParser;
@@ -17,13 +22,15 @@ struct MathExprParser;
 const INTERNAL_ERROR_MSG: &str = "Pepega screwed up the parser: ";
 
 lazy_static! {
+    /// This parser object is instatiated once at runtime, then it is used repeatedly.
+    /// Operator precedence is defined here.
     static ref PARSER: PrattParser<Rule> = PrattParser::new()
         .op(Op::infix(Rule::addition_op, Assoc::Left)
             | Op::infix(Rule::subtraction_op, Assoc::Left))
         .op(Op::infix(Rule::multiplication_op, Assoc::Left)
             | Op::infix(Rule::division_op, Assoc::Left)
             | Op::infix(Rule::modulo_op, Assoc::Left))
-        .op(Op::infix(Rule::power_op, Assoc::Left))
+        .op(Op::infix(Rule::power_op, Assoc::Left) | Op::infix(Rule::root_op, Assoc::Left))
         .op(Op::postfix(Rule::factorial_op))
         .op(Op::prefix(Rule::abs_op))
         .op(Op::prefix(Rule::ln_op))
@@ -31,6 +38,8 @@ lazy_static! {
         .op(Op::prefix(Rule::minus_sign));
 }
 
+/// This function is called recursively to parse the expression. It takes an iterator
+/// over tokens, and returns a `Result` of MathExpr, or a parser error.
 fn parse_pairs(input_pairs: Pairs<Rule>) -> Result<MathExpr, pest::error::Error<Rule>> {
     PARSER
         .map_primary(|subexpr| match subexpr.as_rule() {
@@ -92,12 +101,15 @@ fn parse_pairs(input_pairs: Pairs<Rule>) -> Result<MathExpr, pest::error::Error<
                 Rule::division_op => Ok(DivExpr(Box::new(left), Box::new(right))),
                 Rule::modulo_op => Ok(ModExpr(Box::new(left), Box::new(right))),
                 Rule::power_op => Ok(PowExpr(Box::new(left), Box::new(right))),
+                Rule::root_op => Ok(RootExpr(Box::new(left), Box::new(right))),
                 _ => unreachable!("{}", INTERNAL_ERROR_MSG),
             }
         })
         .parse(input_pairs)
 }
 
+/// This function parses the whole input string into a math expression represented by
+/// the [MathExpr] enum from the [mathlib] module.
 pub fn parse_input(input: &str) -> Result<MathExpr, pest::error::Error<Rule>> {
     let input_pairs = MathExprParser::parse(Rule::mathexpr, input)?
         .next()
