@@ -1,7 +1,7 @@
 // ! Helper functions, mainly for input validation
 
 /// List of allowed input keys
-pub const ALLOWED_KEYS: &'static [&str; 28] = &[
+pub const ALLOWED_KEYS: &'static [&str; 29] = &[
     "backspace",
     "enter",
     "+",
@@ -17,6 +17,7 @@ pub const ALLOWED_KEYS: &'static [&str; 28] = &[
     "ce",
     "c",
     "×",
+    "x²",
     "√",
     "÷",
     ".",
