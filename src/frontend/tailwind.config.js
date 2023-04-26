@@ -9,7 +9,8 @@ module.exports = {
       },
       colors: {
         'app-bg-start': '#1e293b',
-        'app-bg-end': '#140527'
+        'app-bg-end': '#140527',
+        'black':'#000000'
       }
     },
   },

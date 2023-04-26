@@ -1,14 +1,14 @@
-use yew::{function_component, Html, html, classes, Callback, Properties, AttrValue};
-use crate::{components::keypad_button::{KeypadButton, ButtonType, ButtonSize}};
+use yew::{function_component, Html, html, classes};
+use crate::{components::keypad_button::{KeypadButton, ButtonType}};
 
 #[function_component(Keypad)]
 pub fn keypad() -> Html {
     html! {
-        <div class={classes!("grid", "grid-cols-4", "gap-4", "min-w-full", "min-h-full")}>
+        <div class={classes!("grow", "grid", "grid-cols-4", "gap-4", "w-full", "h-full")}>
             <KeypadButton value={"("} button_type={ButtonType::Primary} /> 
             <KeypadButton value={")"} button_type={ButtonType::Primary} /> 
-            <KeypadButton value={"C"} button_type={ButtonType::Violet} /> 
-            <KeypadButton value={"CE"} button_type={ButtonType::Violet} /> 
+            <KeypadButton value={"C"} button_type={ButtonType::Action} /> 
+            <KeypadButton value={"CE"} button_type={ButtonType::Action} /> 
 
             <KeypadButton value={"x²"} button_type={ButtonType::Primary} /> 
             <KeypadButton value={"√"} button_type={ButtonType::Primary} /> 

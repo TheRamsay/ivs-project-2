@@ -7,7 +7,7 @@
     windows_subsystem = "windows"
 )]
 
-use tauri::{Manager, PhysicalSize};
+use tauri::{Manager, PhysicalSize, LogicalSize};
 
 mod parser;
 use parser::parse_input;
